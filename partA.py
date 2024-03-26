@@ -3,20 +3,27 @@ faces_on_die = 6
 total_combinations = faces_on_die * faces_on_die
 print("Total combinations possible:", total_combinations)
 
-combinations_matrix = [[0] * faces_on_die for _ in range(faces_on_die)]
-for i in range(1, faces_on_die + 1):
-    for j in range(1, faces_on_die + 1):
-        combinations_matrix[i - 1][j - 1] = i + j
-
 print("\nDistribution of possible combinations:")
+combinations_matrix = [[0] *  faces_on_die for _ in range( faces_on_die)]
+for i in range( faces_on_die ):
+    for j in range( faces_on_die ):
+        combinations_matrix[i][j] = (i+1, j+1)
+
 for row in combinations_matrix:
     print(row)
+import numpy as np
 
-probabilities = {}
-for sum_val in range(2, 13):
-    count = sum(row.count(sum_val) for row in combinations_matrix)
-    probabilities[sum_val] = count / total_combinations
+sum = np.empty((6, 6), dtype=int)
+for i in range(1, 7):
+    for j in range(1, 7):
+        sum[i-1][j-1] = i + j
 
-print("\nProbability of possible sums:")
-for sum_val, prob in probabilities.items():
-    print(f"P(Sum = {sum_val}) = {prob:.5f}")
+print("\nProbability of all possible sums:")
+for i in range(2, 13):
+    count = 0
+    for row in sum:
+        for value in row:
+            if i == value:
+                count += 1
+    probability = count / total_combinations
+    print("P(Sum = {}) = {:.4f}".format(i,probability))
